@@ -7,8 +7,24 @@
   --primary-dark: #0b5f59;
   --accent: #e6f4f1;
   --border: #e2e8f0;
+  --alt-bg: #eef3f8;
+  --header-bg: rgba(247, 249, 252, 0.9);
   --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
   --radius: 14px;
+}
+
+html[data-theme="dark"] {
+  --bg: #0f172a;
+  --surface: #1e293b;
+  --text: #e5edf5;
+  --muted: #b6c2d1;
+  --primary: #2dd4bf;
+  --primary-dark: #14b8a6;
+  --accent: #134e4a;
+  --border: #334155;
+  --alt-bg: #162033;
+  --header-bg: rgba(15, 23, 42, 0.9);
+  --shadow: 0 10px 30px rgba(2, 6, 23, 0.45);
 }
 
 * {
@@ -47,7 +63,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(247, 249, 252, 0.9);
+  background: var(--header-bg);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }
@@ -57,13 +73,20 @@ a {
   align-items: center;
   justify-content: space-between;
   min-height: 64px;
-  gap: 1rem;
+  gap: 0.75rem;
+  position: relative;
 }
 
 .brand {
   font-weight: 700;
   font-size: 1.2rem;
   color: var(--primary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .nav-menu {
@@ -82,15 +105,37 @@ a {
   color: var(--primary);
 }
 
+.theme-toggle,
+.menu-toggle {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  font-size: 1rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus,
+.menu-toggle:hover,
+.menu-toggle:focus {
+  border-color: var(--primary);
+}
+
 .menu-toggle {
   display: none;
   flex-direction: column;
   gap: 4px;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
   padding: 8px;
-  cursor: pointer;
 }
 
 .menu-toggle span {
@@ -160,7 +205,7 @@ a {
 }
 
 .section-alt {
-  background: #eef3f8;
+  background: var(--alt-bg);
 }
 
 .section-head {
@@ -181,7 +226,7 @@ a {
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 1.25rem;
 }
 
@@ -266,7 +311,7 @@ a {
 }
 
 .btn-secondary {
-  background: #fff;
+  background: var(--surface);
   color: var(--primary);
   border-color: var(--border);
 }
@@ -329,25 +374,35 @@ a {
     grid-template-columns: 1fr;
   }
 
-  .cards {
-    grid-template-columns: 1fr;
-  }
-
   .steps {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 700px) {
+  .nav-wrap {
+    flex-wrap: wrap;
+    padding: 0.5rem 0;
+  }
+
+  .brand {
+    flex: 1 1 auto;
+    font-size: 1.05rem;
+  }
+
+  .header-actions {
+    margin-left: auto;
+  }
+
   .menu-toggle {
     display: flex;
   }
 
   .nav-menu {
     position: absolute;
-    top: 64px;
-    right: 4%;
-    left: 4%;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    left: 0;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
@@ -379,4 +434,38 @@ a {
   .hero-actions .btn {
     width: 100%;
   }
+}
+
+@media (min-width: 1100px) {
+  .cards { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* === Perbaikan tema gelap & layout (manual) === */
+html[data-theme="dark"] body { background: #0f172a !important; color: #e2e8f0 !important; }
+html[data-theme="dark"] .site-header,
+html[data-theme="dark"] .nav-menu { background: #111827 !important; border-color: #1f2937 !important; }
+html[data-theme="dark"] .section-alt,
+html[data-theme="dark"] .site-footer { background: #111827 !important; }
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .hero-card,
+html[data-theme="dark"] .cta-box,
+html[data-theme="dark"] .steps li { background: #1e293b !important; border-color: #334155 !important; color: #e2e8f0 !important; }
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3 { color: #f8fafc !important; }
+html[data-theme="dark"] p,
+html[data-theme="dark"] li,
+html[data-theme="dark"] .nav-menu a { color: #cbd5e1 !important; }
+html[data-theme="dark"] .btn-secondary { background: transparent !important; color: #5eead4 !important; border-color: #334155 !important; }
+html[data-theme="dark"] .theme-toggle,
+html[data-theme="dark"] .menu-toggle { background: #1e293b !important; color: #f8fafc !important; border-color: #334155 !important; }
+html[data-theme="dark"] .menu-toggle span { background: #f8fafc !important; }
+
+/* Tombol tema di kanan, setelah menu */
+.nav-wrap .nav-menu { order: 2; margin-left: auto; }
+.nav-wrap .header-actions { order: 3; margin-left: 12px; }
+
+/* 4 kartu sebaris di layar lebar */
+@media (min-width: 1100px) {
+  #layanan .cards { grid-template-columns: repeat(4, 1fr) !important; }
 }
